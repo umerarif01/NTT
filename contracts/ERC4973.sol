@@ -13,6 +13,8 @@ bytes32 constant AGREEMENT_HASH = keccak256(
     "Agreement(address active,address passive,bytes metadata)"
 );
 
+/// @notice Reference implementation of EIP-4973 tokens (https://github.com/attestate/ERC4973/blob/master/src/ERC4973.sol).
+/// @author Tim Daubenschütz, Rahul Rumalla (https://github.com/rugpullindex/ERC4973/blob/master/src/ERC4973.sol)
 abstract contract ERC4973 is EIP712, ERC721, ERC721URIStorage, IERC4973 {
     using BitMaps for BitMaps.BitMap;
 
