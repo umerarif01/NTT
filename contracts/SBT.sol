@@ -13,8 +13,13 @@ contract SBT is ERC4973, Ownable, ReentrancyGuard {
     mapping(address => uint256) public ownerOf;
     // This mapping maps the SBT token ID to its metadata
     mapping(uint256 => bytes) public tokenData;
-    // This mapping maps the owner's address to an array of all the SBT token IDs they currently own.
-    mapping(address => uint256[]) public ownedTokens;
+
+    event SBTGiven(
+        address indexed from,
+        address indexed to,
+        uint256 indexed tokenId,
+        bytes metadata
+    );
 
     constructor(
         string memory name,
@@ -23,21 +28,22 @@ contract SBT is ERC4973, Ownable, ReentrancyGuard {
     ) ERC4973(name, symbol, version) {}
 
     function mint(
-        address to,
-        bytes calldata metadata,
-        bytes calldata signature
+        address _to,
+        bytes calldata _metadata,
+        bytes calldata _signature
     ) public payable returns (uint256) {
         uint256 feeAmount = (msg.value * serviceFee) / 1000;
-        uint256 tokenId = give(to, metadata, signature);
-        ownerOf[to] = tokenId;
-        tokenData[tokenId] = metadata;
+        uint256 tokenId = give(_to, _metadata, _signature);
+        ownerOf[_to] = tokenId;
+        tokenData[tokenId] = _metadata;
         serviceFeeCollected += feeAmount;
+        emit SBTGiven(msg.sender, _to, tokenId, _metadata);
         return tokenId;
     }
 
     function mintToMany(
         address[] calldata _recipients,
-        bytes calldata metadata,
+        bytes calldata _metadata,
         bytes[] calldata _signatures
     ) external virtual {
         require(
@@ -45,10 +51,14 @@ contract SBT is ERC4973, Ownable, ReentrancyGuard {
             "giveToMany: recipients and signatures length mismatch"
         );
 
-        for (uint256 i = 0; i < _recipients.length; i++) {}
+        for (uint i = 0; i < _recipients.length; i++) {
+            uint256 tokenId = give(_recipients[i], _metadata, _signatures[i]);
+            emit SBTGiven(msg.sender, _recipients[i], tokenId, _metadata);
+        }
     }
 
-    function revoke(uint256 tokenId) public {
+    function burn(uint256 tokenId) public {
+        require(_exists(tokenId), "SBT: token does not exist");
         unequip(tokenId);
     }
 
