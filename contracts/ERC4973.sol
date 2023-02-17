@@ -53,10 +53,6 @@ abstract contract ERC4973 is EIP712, ERC721, ERC721URIStorage, IERC4973 {
     }
 
     function unequip(uint256 tokenId) public virtual override {
-        require(
-            msg.sender == ownerOf(tokenId),
-            "unequip: sender must be owner"
-        );
         _usedHashes.unset(tokenId);
         _burn(tokenId);
     }

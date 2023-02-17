@@ -3,7 +3,7 @@ import "@nomicfoundation/hardhat-toolbox";
 require("dotenv").config();
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "goerli",
+  defaultNetwork: "hardhat",
   networks: {
     hardhat: {
       gasPrice: 470000000000,

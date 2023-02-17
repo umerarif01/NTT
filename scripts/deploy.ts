@@ -6,22 +6,16 @@ async function main() {
 
   console.log("Deploying contract with the account:", deployer.address);
 
+  // Please fill out these before running the deploy script
+  const TOKENNAME = "";
+  const TOKENSYMBOL = "";
+  const VERSION = "";
+
   const SBT = await ethers.getContractFactory("SBT");
-  const sbt = await SBT.deploy("MyToken", "MTK", "1.0");
+  const sbt = await SBT.deploy(TOKENNAME, TOKENSYMBOL, VERSION);
 
   await sbt.deployed();
   console.log("Contract deployed at:", sbt.address);
-
-  // const metadata = "0x1234";
-  // const signer = ethers.utils.keccak256(
-  //   ethers.utils.toUtf8Bytes("I agree to the terms and conditions")
-  // );
-  // const signature = await deployer.signMessage(ethers.utils.arrayify(signer));
-
-  // const tokenId = await sbt
-  //   .connect(otherAccount)
-  //   .mint(deployer.address, metadata, signature);
-  // console.log("Token minted with ID:", tokenId.toString());
 }
 
 main()
