@@ -6,10 +6,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 /**
-@title SBT Contract
+@title DMusicLicensing Contract
 @dev Smart contract for creating and managing SBT tokens.
 */
-contract SBT is ERC4973, Ownable, ReentrancyGuard {
+contract DMusicLicensing is ERC4973, Ownable, ReentrancyGuard {
     uint256 private serviceFee = 25; // 2.5 service fee of the platform
     uint256 private serviceFeeCollected; // Total service fee collected by issuing tokens
 
